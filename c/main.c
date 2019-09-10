@@ -13,7 +13,10 @@ void activate(GtkApplication* app, gpointer data){
       app,
       "random_number_test.gtk"
     );
-    random_seed();
+    random_seed(
+      0,
+      0
+    );
 
     // Create text view.
     buffer = gtk_text_buffer_new(NULL);
