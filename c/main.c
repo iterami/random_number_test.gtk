@@ -6,6 +6,62 @@
 #include "../../common/c/random.c"
 
 void activate(GtkApplication* app, gpointer data){
+    gtk_window_present(GTK_WINDOW(window));
+}
+
+gboolean add_row(void* data){
+    int i;
+    for(i = 0; i < 50; i++){
+        int random_number = random_integer(42) + 48;
+        row[i] = (char)random_number;
+    }
+
+    GtkTextIter end;
+
+    gtk_text_buffer_get_end_iter(
+      buffer,
+      &end
+    );
+    gtk_text_buffer_insert(
+      buffer,
+      &end,
+      row,
+      51
+    );
+
+    return TRUE;
+}
+
+int main(int argc, char **argv){
+    GtkApplication *app;
+
+    app = gtk_application_new(
+      "com.iterami.random_number_test",
+      0
+    );
+    g_signal_connect(
+      app,
+      "activate",
+      G_CALLBACK(activate),
+      NULL
+    );
+    g_signal_connect(
+      app,
+      "startup",
+      G_CALLBACK(startup),
+      NULL
+    );
+    int status = g_application_run(
+      G_APPLICATION(app),
+      argc,
+      argv
+    );
+    g_object_unref(app);
+
+    return status;
+}
+
+void startup(GtkApplication* app, gpointer data){
     GtkWidget *box;
     GtkWidget *scrolled_window;
 
@@ -69,50 +125,4 @@ void activate(GtkApplication* app, gpointer data){
       add_row,
       NULL
     );
-}
-
-gboolean add_row(void* data){
-    int i;
-    for(i = 0; i < 50; i++){
-        int random_number = random_integer(42) + 48;
-        row[i] = (char)random_number;
-    }
-
-    GtkTextIter end;
-
-    gtk_text_buffer_get_end_iter(
-      buffer,
-      &end
-    );
-    gtk_text_buffer_insert(
-      buffer,
-      &end,
-      row,
-      51
-    );
-
-    return TRUE;
-}
-
-int main(int argc, char **argv){
-    GtkApplication *app;
-
-    app = gtk_application_new(
-      "com.iterami.random_number_test",
-      0
-    );
-    g_signal_connect(
-      app,
-      "activate",
-      G_CALLBACK(activate),
-      NULL
-    );
-    int status = g_application_run(
-      G_APPLICATION(app),
-      argc,
-      argv
-    );
-    g_object_unref(app);
-
-    return status;
 }
