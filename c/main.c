@@ -5,10 +5,6 @@
 #include "../../common/c/gtk.c"
 #include "../../common/c/random.c"
 
-void activate(GtkApplication* app, gpointer data){
-    gtk_window_present(GTK_WINDOW(window));
-}
-
 gboolean add_row(void* data){
     int i;
     for(i = 0; i < 50; i++){
@@ -42,7 +38,7 @@ int main(int argc, char **argv){
     g_signal_connect(
       app,
       "activate",
-      G_CALLBACK(activate),
+      G_CALLBACK(gtk_activate),
       NULL
     );
     g_signal_connect(
